@@ -1,0 +1,14 @@
+# folders
+node_modules
+dist
+build
+.idea
+packages/*
+
+# files
+package-lock.json
+yarn.lock
+
+# errors
+npm-debug.log
+yarn-error.log

@@ -1,0 +1,29 @@
+{
+  "name": "marcius-binance-api",
+  "version": "0.0.1",
+  "description": "Binance API is an asynchronous node.js library for the Binance API designed to be easy to use.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcius-capital/binance-api.git"
+  },
+  "keywords": [
+    "node",
+    "nodejs",
+    "javascript",
+    "binance",
+    "api",
+    "cryptocurrency",
+    "rest",
+    "websocket"
+  ],
+  "author": "Nikita Marcius <telegram @nikitamarcius>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marcius-capital/binance-api/issues"
+  },
+  "homepage": "https://github.com/marcius-capital/binance-api#readme",
+  "dependencies": {
+    "axios": "0.18.0"
+  }
+}
