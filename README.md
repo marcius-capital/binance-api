@@ -1,4 +1,4 @@
-[![NPM](https://nodei.co/npm/marcius-binance-api.png?downloadRank=true?stars=true)](https://nodei.co/npm/marcius-binance-api/)
+[![NPM](https://nodei.co/npm/@marcius-capital/binance-api.png?downloadRank=true?stars=true)](https://nodei.co/npm/@marcius-capital/binance-api/)
 
 # Binance API
 Binance API is an asynchronous node.js library for the Binance API designed to be easy to use. 
@@ -22,6 +22,9 @@ Name | Description
 
 For ease to use, we renamed object keys.
 
+``Server response`` => ``Rename keys with "schema.js"`` => ``Updated response``
+
+
 ### Response
 
 ```javascript
@@ -40,7 +43,7 @@ For ease to use, we renamed object keys.
 ]
 ```
 
-### Our Schema
+### Schema snippet / [schema.js](/api/binance/schema.js#L7)
 
 ```javascript
 aggTrades: {
@@ -69,6 +72,7 @@ aggTrades: {
     "maker": true,          
     "bestPriceMatch": true         
   }
+  ...
 ]
 
 ```
@@ -79,17 +83,17 @@ If you need to update the keys, you can do this in [schema.js](/api/binance/sche
 
 ### Package manager
 
-```javascript
+```node
 
-yarn add marcius-binance-api
+yarn add @marcius-capital/binance-api
 
-npm install marcius-binance-api --save
+npm install @marcius-capital/binance-api
 ```
 
 ### 
 
 ```javascript
-import api from 'marcius-binance-api'
+import api from '@marcius-capital/binance-api'
 ```
 
 ## Rest
