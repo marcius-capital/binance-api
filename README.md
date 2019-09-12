@@ -73,7 +73,7 @@ aggTrades: {
 
 ```
 
-If you need to update the keys, you can do this in [schema.js](/binance/schema.js)
+If you need to update the keys, you can do this in [schema.js](/api/binance/schema.js)
 
 ## Install
 
@@ -94,7 +94,7 @@ import api from 'marcius-binance-api'
 
 ## Rest
 
-List of [REST requests](https://github.com/marcius-capital/binance-api/blob/master/binance/rest.js#L16)
+List of [REST requests](/api/binance/rest.js#L16)
 
 ### Public
 
@@ -116,7 +116,7 @@ api.rest.account({auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET'}}).then(cb =>
 
 ## Websocket
 
-List of [WS requests](https://github.com/marcius-capital/binance-api/blob/master/binance/ws.js#L18)
+List of [WS requests](/api/binance/ws.js#L18)
 
 ```javascript
 // https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#trade-streams
