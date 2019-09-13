@@ -1,7 +1,9 @@
-[![NPM](https://nodei.co/npm/@marcius-capital/binance-api.png?downloadRank=true?stars=true)](https://nodei.co/npm/@marcius-capital/binance-api/)
+[![NPM](https://nodei.co/npm-dl/@marcius-capital/binance-api.png?compact=true&stars=true&downloads=true)](https://nodei.co/npm-dl/@marcius-capital/binance-api/)
 
 # Binance API
 This project will help you make your own app that interact with [Binance API](https://github.com/binance-exchange/binance-official-api-docs). Module includes REST and Websocket.
+
+*Note! Using es6 ``imports``*
 
 Name | Description
 ------------ | ------------
