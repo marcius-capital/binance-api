@@ -1,9 +1,7 @@
 [![NPM](https://nodei.co/npm/@marcius-capital/binance-api.png?downloadRank=true?stars=true)](https://nodei.co/npm/@marcius-capital/binance-api/)
 
 # Binance API
-Binance API is an asynchronous node.js library for the Binance API designed to be easy to use. 
-
-Official [Binance api](https://github.com/binance-exchange/binance-official-api-docs).
+This project will help you make your own app that interact with [Binance API](https://github.com/binance-exchange/binance-official-api-docs). Module includes REST and Websocket.
 
 Name | Description
 ------------ | ------------
