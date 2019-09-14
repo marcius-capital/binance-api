@@ -1,7 +1,4 @@
-import binanceRest from './binance/rest'
-import binanceWS from './binance/ws'
-
-export default {
-	rest: binanceRest,
-	stream: binanceWS,
+module.exports = {
+	rest: require('./binance/rest'),
+	stream: require('./binance/ws'),
 }

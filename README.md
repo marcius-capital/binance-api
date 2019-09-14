@@ -3,8 +3,6 @@
 # Binance API
 This project will help you make your own app that interact with [Binance API](https://github.com/binance-exchange/binance-official-api-docs). Module includes REST and Websocket.
 
-*Note! Using es6 ``imports``*
-
 Name | Description
 ------------ | ------------
 [rest-api.md](https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md) | Details on the Rest API (/api)
@@ -94,21 +92,72 @@ npm install @marcius-capital/binance-api
 
 ```javascript
 import api from '@marcius-capital/binance-api'
+
+api.rest.<REQUEST_NAME>({<OPTIONS>}).then(cb => console.log(cb))
+api.stream.<REQUEST_NAME>({<OPTIONS>}, cb => console.log(cb))
 ```
+``<OPTIONS>`` valid from Official [Binance API](#binance-api). ``<REQUEST_NAME>`` You can find below in REST and WS stack.
+
+
+
 
 ## Rest
 
-List of [REST requests](/api/binance/rest.js#L16)
+List of [REST request names](/api/binance/rest.js#L16)
 
 ### Public
 
 ```javascript
 // https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md#24hr-ticker-price-change-statistics
-api.rest.ticker({symbol: 'btcusdt'.toUpperCase()}).then(cb => console.log(cb)) // Single ticker
+
 api.rest.ticker({}).then(cb => console.log(cb)) // All tickers
+api.rest.ticker({symbol: 'btcusdt'.toUpperCase()}).then(cb => console.log(cb)) // Single ticker
+
+{
+  name: 'BTCUSDT',
+  priceChange: '2.28000000',
+  priceChangePercent: '0.022',
+  weightedAvgPrice: '10278.47517504',
+  prevClosePrice: '10283.43000000',
+  lastPrice: '10285.25000000',
+  lastQty: '0.13350400',
+  bidPrice: '10284.01000000',
+  bidQty: '0.01445000',
+  askPrice: '10285.69000000',
+  askQty: '0.02137700',
+  openPrice: '10282.97000000',
+  highPrice: '10369.23000000',
+  lowPrice: '10153.00000000',
+  volume: '26624.06609700',
+  quoteVolume: '273654802.43665967',
+  openTime: 1568354653503,
+  closeTime: 1568441053503,
+  firstId: 178718201,
+  lastId: 179000107,
+  count: 281907
+}
 
 // https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md#klinecandlestick-data
 api.rest.ohlc({symbol: 'btcusdt'.toUpperCase(), interval: '1h',	limit: 500}).then(cb => console.log(cb))
+
+[
+  {
+    time: 1567000800000,
+    open: '10169.03000000',
+    high: '10233.70000000',
+    low: '10158.00000000',
+    close: '10203.10000000',
+    volume: '1416.59470900',
+    closeTime: 1567004399999,
+    quoteAssetVolume: '14430112.00064011',
+    trades: 10995,
+    takerBaseAssetVolume: '855.05278800',
+    takerQuoteAssetVolume: '8711736.69011630',
+    ignored: '0'
+  },
+  ... 400 more items
+]
+
 ```
 
 ### Private
@@ -120,11 +169,25 @@ api.rest.account({auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET'}}).then(cb =>
 
 ## Websocket
 
-List of [WS requests](/api/binance/ws.js#L18)
+List of [WS request names](/api/binance/ws.js#L24)
 
 ```javascript
 // https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#trade-streams
 api.stream.trade('btcusdt', cb => console.log(cb))
+
+{
+  e: 'trade',
+  eventTime: 1568440855470,
+  symbol: 'BTCUSDT',
+  tradeId: 178999693,
+  price: '10287.02000000',
+  quantity: '0.10715200',
+  buyerOrderId: 640336083,
+  sellerOrderId: 640336084,
+  timestamp: 1568440855465,
+  maker: true,
+  bestPriceMatch: true
+}
 ```
 
 ### Terminate connections
