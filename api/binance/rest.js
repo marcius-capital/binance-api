@@ -29,8 +29,14 @@ const schema = {
     ohlc: {
         url: 'v1/klines',
     },
-    ticker: {
+    avgPrice: {
+        url: 'v3/avgPrice'
+    },
+    ticker24hr: {
         url: 'v1/ticker/24hr',
+    },
+    ticker: {
+        url: 'v3/ticker/price',
     },
     account: {
         url: 'v3/account',
@@ -57,6 +63,11 @@ const schema = {
         method: 'delete',
         private: true
     },
+    myTrades: {
+        url: 'v3/myTrades',
+        method: 'get',
+        private: true
+    },
     createTestOrder: {
         url: 'v3/order/test',
         method: 'post',
@@ -66,11 +77,6 @@ const schema = {
             type: 'LIMIT'
         }
     },
-    myTrades: {
-        url: 'v3/myTrades',
-        method: 'get',
-        private: true
-    },
 }
 
 const rename = (data, event) => renameKeys(binanceRestSchema[event], data)
@@ -78,7 +84,7 @@ const rename = (data, event) => renameKeys(binanceRestSchema[event], data)
 const headers = {}
 
 const requestPrivateAPI = ({params: _params = {}, ...data}, {auth = {}, params = {}}, event) => {
-    const timestamp = Date.now()
+    const timestamp = Date.now() - 1000
     const queryString = qs.stringify(Object.assign(params, _params, {timestamp}))
 
     const signature = crypto.createHmac('sha256', auth.secret)

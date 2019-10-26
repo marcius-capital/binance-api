@@ -1,5 +1,3 @@
-[![NPM](https://nodei.co/npm-dl/@marcius-capital/binance-api.png?compact=true&stars=true&downloads=true)](https://nodei.co/npm-dl/@marcius-capital/binance-api/)
-
 # Binance API
 This project will help you make your own app that interact with [Binance API](https://github.com/binance-exchange/binance-official-api-docs). Module includes REST and Websocket.
 
@@ -82,10 +80,7 @@ If you need to update the keys, you can do this in [schema.js](/api/binance/sche
 ### Package manager
 
 ```node
-
-yarn add @marcius-capital/binance-api
-
-npm install @marcius-capital/binance-api
+npm install @marcius-capital/binance-api // yarn add @marcius-capital/binance-api
 ```
 
 ### 
@@ -165,6 +160,10 @@ api.rest.ohlc({symbol: 'btcusdt'.toUpperCase(), interval: '1h',	limit: 500}).the
 ```javascript
 // https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md#account-information-user_data
 api.rest.account({auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET'}}).then(cb => console.log(cb))
+
+//Need to specify "auth" and "params" for each request
+// https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md#new-order--trade
+api.rest.createOrder({auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET'}, params: {symbol: 'BTCUSDT', side: 'SELL', price: '8000', quantity: '0.01' }}).then(cb => console.log(cb)).catch(cb => console.log(cb))
 ```
 
 ## Websocket
@@ -193,6 +192,7 @@ api.stream.trade('btcusdt', cb => console.log(cb))
 ### Terminate connections
 
 ```javascript
+// Will terminate all connections
 api.stream.terminate()
 ```
 
