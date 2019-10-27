@@ -105,11 +105,11 @@ List of [REST request names](/api/binance/rest.js#L16)
 ```javascript
 // https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md#24hr-ticker-price-change-statistics
 
-api.rest.ticker({}).then(cb => console.log(cb)) // All tickers
-api.rest.ticker({symbol: 'btcusdt'.toUpperCase()}).then(cb => console.log(cb)) // Single ticker
+api.rest.ticker24hr({}).then(cb => console.log(cb)) // All tickers
+api.rest.ticker24hr({symbol: 'btcusdt'.toUpperCase()}).then(cb => console.log(cb)) // Single ticker
 
 {
-  name: 'BTCUSDT',
+  symbol: 'BTCUSDT',
   priceChange: '2.28000000',
   priceChangePercent: '0.022',
   weightedAvgPrice: '10278.47517504',
