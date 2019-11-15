@@ -46,7 +46,9 @@ const keyWSSchema = {
 }
 
 const binanceWSSchema = {
-    aggTrades: {
+    aggTrade: {
+        e: 'event',
+        s: 'symbol',
         E: 'eventTime',
         a: 'aggTradeId',
         p: 'price',

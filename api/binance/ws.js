@@ -9,7 +9,7 @@
 
 // https://www.npmjs.com/package/reconnecting-websocket
 const ReconnectingWebSocket = require('reconnecting-websocket')
-const WebSocket = require('ws')
+// const WebSocket = require('ws')
 
 // import {keyWSSchema, binanceWSSchema} from './schema';
 
@@ -41,7 +41,8 @@ const rename = data => renameKeys(
 const sockets = []
 
 const setupWebSocket = (path, callback) => {
-    const ws = new ReconnectingWebSocket(url + path, [], {WebSocket})
+    // const ws = new ReconnectingWebSocket(url + path, [], {WebSocket})
+    const ws = new ReconnectingWebSocket(url + path)
 
     // ws.on('message', message => callback(JSON.parse(message)))
     // ws.on('error', e => callback(e))

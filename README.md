@@ -171,6 +171,9 @@ api.rest.createOrder({auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET'}, params:
 List of [WS request names](/api/binance/ws.js#L24)
 
 ```javascript
+
+// api.stream.ohlc({symbol: 'btcusdt', interval: '1h'}, cb => console.log(cb))
+
 // https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md#trade-streams
 api.stream.trade('btcusdt', cb => console.log(cb))
 
