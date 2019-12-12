@@ -17,6 +17,9 @@ const schema = {
     test: {
         url: 'v1/ping',
     },
+    exchangeInfo: {
+        url: 'v3/exchangeInfo',
+    },
     time: {
         url: 'v1/time',
     },
@@ -31,6 +34,9 @@ const schema = {
     },
     avgPrice: {
         url: 'v3/avgPrice'
+    },
+    aggTrades: {
+        url: 'v3/aggTrades'
     },
     ticker24hr: {
         url: 'v1/ticker/24hr',
@@ -56,7 +62,10 @@ const schema = {
     createOrder: {
         url: 'v3/order',
         method: 'post',
-        private: true
+        private: true,
+        params: {
+            timeInForce: 'GTC',
+        }
     },
     deleteOrder: {
         url: 'v3/order',
