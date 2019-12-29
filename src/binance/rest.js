@@ -2,8 +2,8 @@ const crypto = require('crypto')
 const axios = require('axios')
 const qs = require('querystring')
 
-const renameKeys = require('../renameKeys')
-const binanceRestSchema = require('./schema').binanceRestSchema
+import renameKeys from '../renameKeys'
+import {binanceRestSchema} from "./schema";
 
 /*
 * https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md

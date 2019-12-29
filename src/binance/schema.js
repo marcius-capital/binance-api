@@ -1,4 +1,4 @@
-const binanceRestSchema = {
+export const binanceRestSchema = {
     trades: {
         qty: 'quantity',
         time: 'timestamp',
@@ -41,11 +41,11 @@ const binanceRestSchema = {
 }
 
 
-const keyWSSchema = {
+export const keyWSSchema = {
     kline: 'k',
 }
 
-const binanceWSSchema = {
+export const binanceWSSchema = {
     aggTrade: {
         e: 'event',
         s: 'symbol',
@@ -255,10 +255,4 @@ const binanceWSSchema = {
         "v": "baseAssetVolume",           // Total traded base asset volume
         "q": 'quoteAssetVolume'             // Total traded quote asset volume
     }
-}
-
-module.exports = {
-    binanceRestSchema,
-    keyWSSchema,
-    binanceWSSchema
 }

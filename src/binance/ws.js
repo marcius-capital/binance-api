@@ -8,16 +8,16 @@
 * */
 
 // https://www.npmjs.com/package/reconnecting-websocket
-const ReconnectingWebSocket = require('reconnecting-websocket')
-// const WebSocket = require('ws')
+import ReconnectingWebSocket from 'reconnecting-websocket'
+import NodeWebSocket from 'ws'
 
-// import {keyWSSchema, binanceWSSchema} from './schema';
+import renameKeys from "../renameKeys";
 
-const renameKeys = require('../renameKeys')
-const keySchema = require('./schema')
+import {keyWSSchema, binanceWSSchema} from './schema'
 
-const keyWSSchema = keySchema.keyWSSchema
-const binanceWSSchema = keySchema.binanceWSSchema
+const options = {
+    WebSocket: typeof window !== 'undefined' ? WebSocket : NodeWebSocket, // custom WebSocket constructor
+}
 
 const url = 'wss://stream.binance.com:9443/ws/'
 
@@ -41,11 +41,8 @@ const rename = data => renameKeys(
 const sockets = []
 
 const setupWebSocket = (path, callback) => {
-    // const ws = new ReconnectingWebSocket(url + path, [], {WebSocket})
-    const ws = new ReconnectingWebSocket(url + path)
 
-    // ws.on('message', message => callback(JSON.parse(message)))
-    // ws.on('error', e => callback(e))
+    const ws = new ReconnectingWebSocket(url + path, [], options)
 
     ws.onopen = () => console.log('Connected to exchange WS')
     ws.onclose = () => console.log('Connected WS closed')

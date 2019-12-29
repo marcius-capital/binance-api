@@ -1,5 +1,5 @@
 # Binance API
-This project will help you make your own app that interact with [Binance API](https://github.com/binance-exchange/binance-official-api-docs). Module includes REST and Websocket.
+This project will help you make your own app that interact with [Binance API](https://github.com/binance-exchange/binance-official-api-docs). Module includes REST and Websocket (client + server).
 
 Name | Description
 ------------ | ------------
@@ -20,7 +20,6 @@ For ease to use, we renamed object keys.
 
 ``Server response`` => ``Rename keys with "schema.js"`` => ``Updated response``
 
-
 ### Response
 
 ```javascript
@@ -39,7 +38,7 @@ For ease to use, we renamed object keys.
 ]
 ```
 
-### Schema snippet / [schema.js](/api/binance/schema.js#L7)
+### Schema snippet / [schema.js](/src/binance/schema.js#L7)
 
 ```javascript
 aggTrades: {
@@ -64,7 +63,7 @@ aggTrades: {
     "quantity": "4.70443515",  
     "firstTradeId": 27781,      
     "lastTradeId": 27781,        
-    "timestamp": 1498793709153, 
+    "timestamp": 1498793709153,
     "maker": true,          
     "bestPriceMatch": true         
   }
@@ -73,7 +72,7 @@ aggTrades: {
 
 ```
 
-If you need to update the keys, you can do this in [schema.js](/api/binance/schema.js)
+If you need to update the keys, you can do this in [schema.js](/src/binance/schema.js)
 
 ## Install
 
@@ -83,7 +82,7 @@ If you need to update the keys, you can do this in [schema.js](/api/binance/sche
 npm install @marcius-capital/binance-api // yarn add @marcius-capital/binance-api
 ```
 
-### 
+###
 
 ```javascript
 import api from '@marcius-capital/binance-api'
@@ -98,7 +97,7 @@ api.stream.<REQUEST_NAME>({<OPTIONS>}, cb => console.log(cb))
 
 ## Rest
 
-List of [REST request names](/api/binance/rest.js#L16)
+List of [REST request names](/src/binance/rest.js#L16)
 
 ### Public
 
@@ -168,7 +167,7 @@ api.rest.createOrder({auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET'}, params:
 
 ## Websocket
 
-List of [WS request names](/api/binance/ws.js#L24)
+List of [WS request names](/src/binance/ws.js#L24)
 
 ```javascript
 
