@@ -1,4 +1,4 @@
-export const binanceRestSchema = {
+const binanceRestSchema = {
     trades: {
         qty: 'quantity',
         time: 'timestamp',
@@ -13,8 +13,8 @@ export const binanceRestSchema = {
         m: 'maker',
         M: 'bestPriceMatch'
     },
-    ohlc: {
-        0: 'time',
+    klines: {
+        0: 'openTime',
         1: 'open',
         2: 'high',
         3: 'low',
@@ -41,11 +41,11 @@ export const binanceRestSchema = {
 }
 
 
-export const keyWSSchema = {
+const keyWSSchema = {
     kline: 'k',
 }
 
-export const binanceWSSchema = {
+const binanceWSSchema = {
     aggTrade: {
         e: 'event',
         s: 'symbol',
@@ -129,8 +129,8 @@ export const binanceWSSchema = {
         k: 'kline'
     },
     kline: {
-        t: 'startTime',
-        T: 'endTime',
+        t: 'openTime',
+        T: 'closeTime',
         s: 'symbol',
         i: 'interval',
         f: 'firstTradeId',
@@ -156,7 +156,7 @@ export const binanceWSSchema = {
         q: 'quantity',
         f: 'firstTradeId',
         l: 'lastTradeId',
-        T: 'time',
+        T: 'timestamp',
         m: 'maker',
         M: 'ignored'
     },
@@ -215,7 +215,7 @@ export const binanceWSSchema = {
         q: 'quantity',
         b: 'buyerOrderId',
         a: 'sellerOrderId',
-        T: 'time',
+        T: 'timestamp',
         m: 'maker',
         M: 'ignored'
     },
@@ -227,7 +227,7 @@ export const binanceWSSchema = {
         P: 'priceChangePercent',
         w: 'weightedAveragePrice',
         x: 'previousClose',
-        c: 'currentClose',
+        c: 'lastPrice',
         Q: 'closeQuantity',
         b: 'bid',
         B: 'bestBidQuantity',
@@ -255,4 +255,19 @@ export const binanceWSSchema = {
         "v": "baseAssetVolume",           // Total traded base asset volume
         "q": 'quoteAssetVolume'             // Total traded quote asset volume
     }
+}
+
+const renameKeys = require("../renameKeys")
+
+const rename = data => renameKeys(
+    (Array.isArray(data) ? binanceWSSchema[data[0].e] : binanceWSSchema[data.e]),
+    (keyWSSchema[data.e]) ? data[keyWSSchema[data.e]] : data,
+)
+
+
+module.exports = {
+    rename,
+    binanceRestSchema,
+    keyWSSchema,
+    binanceWSSchema
 }

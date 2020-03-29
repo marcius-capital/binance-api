@@ -1,8 +1,8 @@
 {
   "name": "@marcius-capital/binance-api",
-  "version": "0.2.0",
-  "description": "Binance API is an asynchronous node.js library for the Binance API designed to be easy to use.",
-  "main": "build/index.js",
+  "version": "0.2.1",
+  "description": "Binance API (REST + WebSocket) is an asynchronous node.js library for the Binance API designed to be easy to use.",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marcius-capital/binance-api.git"
@@ -20,6 +20,7 @@
     "rest",
     "websocket",
     "ws",
+    "stream",
     "marcius",
     "marcius-capital"
   ],

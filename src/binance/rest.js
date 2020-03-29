@@ -2,10 +2,10 @@ const crypto = require('crypto')
 const axios = require('axios')
 const qs = require('querystring')
 
-import renameKeys from '../renameKeys'
-import {binanceRestSchema} from "./schema";
+const renameKeys =  require('../renameKeys')
+const {binanceRestSchema} = require("./schema")
 
-/*
+/**
 * https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
 *	Example: api.rest.time().then(data => console.log(data))
 *	Example: api.rest.depth({symbol: 'ETHBTC', limit: 100}).then(data => console.log(data))
@@ -15,22 +15,22 @@ const url = 'https://api.binance.com/api/'
 
 const schema = {
     test: {
-        url: 'v1/ping',
+        url: 'v3/ping',
     },
     exchangeInfo: {
         url: 'v3/exchangeInfo',
     },
     time: {
-        url: 'v1/time',
+        url: 'v3/time',
     },
     depth: {
-        url: 'v1/depth',
+        url: 'v3/depth',
+    },
+    klines: {
+        url: 'v3/klines',
     },
     trades: {
-        url: 'v1/trades',
-    },
-    ohlc: {
-        url: 'v1/klines',
+        url: 'v3/trades',
     },
     avgPrice: {
         url: 'v3/avgPrice'
@@ -39,7 +39,7 @@ const schema = {
         url: 'v3/aggTrades'
     },
     ticker24hr: {
-        url: 'v1/ticker/24hr',
+        url: 'v3/ticker/24hr',
     },
     ticker: {
         url: 'v3/ticker/price',
@@ -93,7 +93,8 @@ const rename = (data, event) => renameKeys(binanceRestSchema[event], data)
 const headers = {}
 
 const requestPrivateAPI = ({params: _params = {}, ...data}, {auth = {}, params = {}}, event) => {
-    const timestamp = Date.now() - 1000
+    const timestamp = Date.now()
+
     const queryString = qs.stringify(Object.assign(params, _params, {timestamp}))
 
     const signature = crypto.createHmac('sha256', auth.secret)
