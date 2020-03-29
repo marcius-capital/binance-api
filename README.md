@@ -154,7 +154,7 @@ api.stream.close.kline({symbol: 'btcusdt', interval = '1h'}) // Params for close
 
 // Close with uniqueID
 api.stream.close.kline({symbol: 'btcusdt', interval = '1h', uniqueID: 'my_awesome_id'}) 
-api.stream.close.kline({ uniqueID: <string_unique>}) 
+api.stream.close.kline({ uniqueID: 'my_awesome_id'}) 
 ```
 
 Close connection have similar params for closing. Difference: `api.stream.kline(<params>, cb)` => `api.stream.close.kline(<params>, cb)`. 
