@@ -1,5 +1,8 @@
 # Binance API
-This project will help you make your own app that interact with [Binance API](https://github.com/binance-exchange/binance-official-api-docs). Module includes REST and Websocket (client + server).
+
+This project will help you make your own app that interact with [Binance API](https://github.com/binance-exchange/binance-official-api-docs). Package includes REST and  STREAM (Websocket) for client and server. 
+
+REST requests are caching (1h).
 
 | Name                                                                                                                     | Description                                               |
 | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
