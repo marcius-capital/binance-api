@@ -53,7 +53,7 @@ const api = Object.keys(schema).reduce((result, item) => {
 // Close connection
 const closeSocketApi = Object.keys(schema).reduce((result, item) => {
     result[item] = (params) => {
-        return (params.uniqueID) ? closeSocket(params.uniqueID) : closeSocket(schema[item](params))
+        return (params && params.uniqueID) ? closeSocket(params.uniqueID) : closeSocket(schema[item](params))
     }
     return result
 }, {})

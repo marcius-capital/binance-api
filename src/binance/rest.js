@@ -1,9 +1,24 @@
 const crypto = require('crypto')
 const axios = require('axios')
+const { setupCache } = require('axios-cache-adapter')
+
 const qs = require('querystring')
 
-const renameKeys =  require('../renameKeys')
-const {binanceRestSchema} = require("./schema")
+// Create `axios-cache-adapter` instance
+const cache = setupCache({
+    maxAge: 60 * 60 * 1000,
+    exclude: { query: false }
+})
+
+// Create `axios` instance passing the newly created `cache.adapter`
+const axiosWithCache = axios.create({
+    adapter: cache.adapter
+})
+
+
+
+const renameKeys = require('../renameKeys')
+const { binanceRestSchema } = require("./schema")
 
 /**
 * https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
@@ -92,10 +107,10 @@ const rename = (data, event) => renameKeys(binanceRestSchema[event], data)
 
 const headers = {}
 
-const requestPrivateAPI = ({params: _params = {}, ...data}, {auth = {}, params = {}}, event) => {
+const requestPrivateAPI = ({ params: _params = {}, ...data }, { auth = {}, params = {} }, event) => {
     const timestamp = Date.now()
 
-    const queryString = qs.stringify(Object.assign(params, _params, {timestamp}))
+    const queryString = qs.stringify(Object.assign(params, _params, { timestamp }))
 
     const signature = crypto.createHmac('sha256', auth.secret)
         .update(queryString)
@@ -104,19 +119,19 @@ const requestPrivateAPI = ({params: _params = {}, ...data}, {auth = {}, params =
     const options = {
         method: data.method,
         url: url + data.url,
-        headers: Object.assign({'X-MBX-APIKEY': auth.key}, headers),
-        params: Object.assign(params, data.params, {signature}, {timestamp})
+        headers: Object.assign({ 'X-MBX-APIKEY': auth.key }, headers),
+        params: Object.assign(params, data.params, { signature }, { timestamp })
     }
 
-    return axios(options).then(data => rename(data.data, event))
+    return axiosWithCache(options).then(res => rename(res.data, event))
 }
 
 const requestPublicAPI = (data, payload = {}, event) => {
-    return axios.get(url + data.url, {params: payload, headers}).then(data => rename(data.data, event))
+    return axiosWithCache.get(url + data.url, { params: payload, headers }).then(res => rename(res.data, event))
 }
 
 const api = Object.keys(schema).reduce((result, item) => {
-    result[item] = payload => (schema[item].private) ? requestPrivateAPI(schema[item], {...payload}, item) : requestPublicAPI(schema[item], payload, item)
+    result[item] = payload => (schema[item].private) ? requestPrivateAPI(schema[item], { ...payload }, item) : requestPublicAPI(schema[item], payload, item)
     return result
 }, {})
 
