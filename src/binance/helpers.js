@@ -2,7 +2,7 @@
 let sockets = new Map()
 
 // Recreate stream if open repeatedly
-export const updateSockets = ({ path, uniqueID }, socket) => {
+const updateSockets = ({ path, uniqueID }, socket) => {
     if (uniqueID) {
         return sockets.set(uniqueID, socket)
     }
@@ -13,17 +13,20 @@ export const updateSockets = ({ path, uniqueID }, socket) => {
 }
 
 // Close connections
-export const closeSockets = () => {
-    sockets.forEach((value, key) => {
-        value.close()
-        sockets.delete(key)
-    })
+const closeSockets = () => {
+    sockets.forEach((value, key) => closeSocket(key))
 }
 
 // Close connection 
-export const closeSocket = (key) => {
+const closeSocket = (key) => {
     if (sockets.has(key)) {
-        sockets.get(key).close()
+        sockets.get(key).close(1000)
         return sockets.delete(key)
     }
+}
+
+module.exports = {
+    updateSockets,
+    closeSockets,
+    closeSocket
 }

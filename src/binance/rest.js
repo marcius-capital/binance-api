@@ -15,8 +15,6 @@ const axiosWithCache = axios.create({
     adapter: cache.adapter
 })
 
-
-
 const renameKeys = require('../renameKeys')
 const { binanceRestSchema } = require("./schema")
 

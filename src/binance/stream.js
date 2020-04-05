@@ -1,18 +1,12 @@
 // https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
 
-// https://www.npmjs.com/package/reconnecting-websocket
-const ReconnectingWebSocket = require('reconnecting-websocket/dist/reconnecting-websocket-amd')
 const NodeWebSocket = require('ws')
+const WS = typeof window !== 'undefined' ? WebSocket : NodeWebSocket
 
 // Rename options
 const { rename } = require('./schema')
 
 const { updateSockets, closeSockets, closeSocket } = require('./helpers')
-
-// custom WebSocket constructor
-const options = {
-    WebSocket: typeof window !== 'undefined' ? WebSocket : NodeWebSocket,
-}
 
 const url = 'wss://stream.binance.com:9443/ws/'
 
@@ -32,8 +26,9 @@ const schema = {
 
 const setupWebSocket = ({ path, uniqueID = false }, callback) => {
 
-    const stream = new ReconnectingWebSocket(url + path, [], options)
+    const stream = new WS(url + path)
 
+    // event stream
     stream.onopen = () => console.log('[socket] Connected to exchange')
     stream.onclose = () => console.log('[socket] Connected closed')
     stream.onmessage = (message) => callback(rename(JSON.parse(message.data)))
