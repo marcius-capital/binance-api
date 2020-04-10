@@ -4,7 +4,13 @@ const NodeWebSocket = require('ws')
 const WS = typeof window !== 'undefined' ? WebSocket : NodeWebSocket
 
 // Rename options
-const { rename } = require('./schema')
+const renameKeys = require("../renameKeys")
+const { streamSchema } = require('./schema')
+const rename = (data) => {
+    const event = (data.e ||  data[0] && typeof data[0].e != 'undefined') ? (data.e || data[0].e) : 'bookTicker'
+    return renameKeys(streamSchema[event], data)
+}
+
 
 const { updateSockets, closeSockets, closeSocket } = require('./helpers')
 

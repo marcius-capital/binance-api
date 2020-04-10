@@ -1,4 +1,4 @@
-const binanceRestSchema = {
+const restSchema = {
     trades: {
         qty: 'quantity',
         time: 'timestamp',
@@ -27,7 +27,16 @@ const binanceRestSchema = {
         10: 'takerQuoteAssetVolume',
         11: 'ignored'
     },
-    depth: {}, //TODO nested keys ASKS, BIDS
+    depth: {
+        bids: {
+            0: 'price',
+            1: 'quantity',
+        },
+        asks: {
+            0: 'price',
+            1: 'quantity',
+        }
+    },
     openOrders: {
         origQty: 'quantity',
         time: 'timestamp',
@@ -37,15 +46,10 @@ const binanceRestSchema = {
         origQty: 'quantity',
         orderId: 'id'
     },
-    account: {}  //TODO nested keys
 }
 
 
-const keyWSSchema = {
-    kline: 'k',
-}
-
-const binanceWSSchema = {
+const streamSchema = {
     aggTrade: {
         e: 'event',
         s: 'symbol',
@@ -60,6 +64,7 @@ const binanceWSSchema = {
         M: 'bestPriceMatch'
     },
     trade: {
+        e: 'event',
         E: 'eventTime',
         s: 'symbol',
         t: 'tradeId',
@@ -71,84 +76,50 @@ const binanceWSSchema = {
         m: 'maker',
         M: 'bestPriceMatch'
     },
-    klines: {
-        0: 'openTime',
-        1: 'open',
-        2: 'high',
-        3: 'low',
-        4: 'close',
-        5: 'volume',
-        6: 'closeTime',
-        7: 'quoteAssetVolume',
-        8: 'trades',
-        9: 'takerBaseAssetVolume',
-        10: 'takerQuoteAssetVolume',
-        11: 'ignored'
-    },
-    bids: [
-        {
-            0: 'price',
-            1: 'quantity',
-            2: 'ignored'
-        }
-    ],
-    asks: [
-        {
-            0: 'price',
-            1: 'quantity',
-            2: 'ignored'
-        }
-    ],
     depthUpdate: {
-        e: 'eventType',
+        e: 'event',
         E: 'eventTime',
         s: 'symbol',
         U: 'firstUpdateId',
         u: 'lastUpdateId',
         b: 'bids',
-        a: 'asks'
-    },
-    bidDepthDelta: [
-        {
+        a: 'asks',
+        bids: {
             0: 'price',
             1: 'quantity',
-            2: 'ignored'
-        }
-    ],
-    askDepthDelta: [
-        {
+        },
+        asks: {
             0: 'price',
             1: 'quantity',
-            2: 'ignored'
         }
-    ],
-    klineEvent: {
-        e: 'eventType',
-        E: 'eventTime',
-        s: 'symbol',
-        k: 'kline'
     },
     kline: {
-        t: 'openTime',
-        T: 'closeTime',
+        e: 'event',
+        E: 'eventTime',
         s: 'symbol',
-        i: 'interval',
-        f: 'firstTradeId',
-        L: 'lastTradeId',
-        o: 'open',
-        c: 'close',
-        h: 'high',
-        l: 'low',
-        v: 'volume',
-        n: 'trades',
-        x: 'final',
-        q: 'quoteVolume',
-        V: 'volumeActive',
-        Q: 'quoteVolumeActive',
-        B: 'ignored'
+        k: 'kline',
+        kline: {
+            t: 'openTime',
+            T: 'closeTime',
+            s: 'symbol',
+            i: 'interval',
+            f: 'firstTradeId',
+            L: 'lastTradeId',
+            o: 'open',
+            c: 'close',
+            h: 'high',
+            l: 'low',
+            v: 'volume',
+            n: 'trades',
+            x: 'final',
+            q: 'quoteVolume',
+            V: 'volumeActive',
+            Q: 'quoteVolumeActive',
+            B: 'ignored'
+        },
     },
     aggTradeEvent: {
-        e: 'eventType',
+        e: 'event',
         E: 'eventTime',
         s: 'symbol',
         a: 'tradeId',
@@ -161,7 +132,7 @@ const binanceWSSchema = {
         M: 'ignored'
     },
     outboundAccountInfoEvent: {
-        e: 'eventType',
+        e: 'event',
         E: 'eventTime',
         m: 'makerCommission',
         t: 'takerCommission',
@@ -173,15 +144,8 @@ const binanceWSSchema = {
         B: 'balances',
         u: 'lastUpdateTime'
     },
-    balances: [
-        {
-            a: 'asset',
-            f: 'availableBalance',
-            l: 'onOrderBalance'
-        }
-    ],
     executionReportEvent: {
-        e: 'eventType',
+        e: 'event',
         E: 'eventTime',
         s: 'symbol',
         c: 'newClientOrderId',
@@ -207,7 +171,7 @@ const binanceWSSchema = {
         t: 'tradeId'
     },
     tradeEvent: {
-        e: 'eventType',
+        e: 'event',
         E: 'eventTime',
         s: 'symbol',
         t: 'tradeId',
@@ -220,7 +184,7 @@ const binanceWSSchema = {
         M: 'ignored'
     },
     '24hrTicker': {
-        e: 'eventType',
+        e: 'event',
         E: 'eventTime',
         s: 'symbol',
         p: 'priceChange',
@@ -245,29 +209,28 @@ const binanceWSSchema = {
         n: 'trades'
     },
     '24hrMiniTicker': {
-        "e": 'eventType',  // Event type
-        "E": 'eventTime',         // Event time
-        "s": 'symbol',          // Symbol
-        "c": 'close',      // Close price
-        "o": 'open',          // Open price
-        "h": 'high',          // High price
-        "l": 'low',          // Low price
-        "v": "baseAssetVolume",           // Total traded base asset volume
-        "q": 'quoteAssetVolume'             // Total traded quote asset volume
+        e: 'event',  // Event type
+        E: 'eventTime',         // Event time
+        s: 'symbol',          // Symbol
+        c: 'close',      // Close price
+        o: 'open',          // Open price
+        h: 'high',          // High price
+        l: 'low',          // Low price
+        v: "baseAssetVolume",           // Total traded base asset volume
+        q: 'quoteAssetVolume'             // Total traded quote asset volume
+    },
+    bookTicker: {
+        u: 'updateId',
+        s: 'symbol',
+        b: 'bestBidPrice',
+        B: 'bestBidQuantity',
+        a: 'bestAskPrice',
+        A: 'bestAskQuantity',
+
     }
 }
 
-const renameKeys = require("../renameKeys")
-
-const rename = data => renameKeys(
-    (Array.isArray(data) ? binanceWSSchema[data[0].e] : binanceWSSchema[data.e]),
-    (keyWSSchema[data.e]) ? data[keyWSSchema[data.e]] : data,
-)
-
-
 module.exports = {
-    rename,
-    binanceRestSchema,
-    keyWSSchema,
-    binanceWSSchema
+    restSchema,
+    streamSchema
 }

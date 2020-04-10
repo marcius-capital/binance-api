@@ -16,7 +16,7 @@ const axiosWithCache = axios.create({
 })
 
 const renameKeys = require('../renameKeys')
-const { binanceRestSchema } = require("./schema")
+const { restSchema } = require("./schema")
 
 /**
 * https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
@@ -101,7 +101,7 @@ const schema = {
     },
 }
 
-const rename = (data, event) => renameKeys(binanceRestSchema[event], data)
+const rename = (data, event) => renameKeys(restSchema[event], data)
 
 const headers = {}
 

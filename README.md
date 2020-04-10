@@ -107,14 +107,16 @@ api.rest.ticker({})
 api.rest.ticker24hr({ symbol: 'BTCUSDT' }) // Single ticker
 api.rest.ticker24hr({}).then(res => res.filter(i => parseFloat(i.volume) !== 0)) // All tickers
 api.rest.klines({ 	symbol: 'BTCUSDT', interval: '1h', limit: 500})
-api.rest.depth({ symbol: 'BTCUSDT' }),
-api.rest.aggTrades({ symbol:'BTCUSDT' }),
+api.rest.depth({ symbol: 'BTCUSDT' })
+api.rest.trades({ symbol: 'BTCUSDT', limit: 20 })
+api.rest.aggTrades({ symbol:'BTCUSDT' })
 
 	// Private requests
-api.rest.account({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET'} })
-api.rest.account({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET'} }).then(res => res.balances.filter(i=> parseFloat(i.free + i.locked) > 0)) // Balance
-api.rest.allOrders({ params: { symbol: 'BTCUSDT' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET'} })
-api.rest.createOrder({ params: {symbol: 'BTCUSDT', side: 'SELL', price: '8000', quantity: '0.01' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET'} })
+api.rest.account({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} })
+api.rest.account({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }).then(res => res.balances.filter(i=> parseFloat(i.free + i.locked) > 0)) // Balance
+api.rest.allOrders({ params: { symbol: 'BTCUSDT' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} })
+api.rest.createOrder({ params: {symbol: 'BTCUSDT', side: 'SELL', price: '8000', quantity: '0.01' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} })
+api.rest.myTrades({ params: { symbol: 'BTCUSDT' }, auth })
 
 ```
 
@@ -130,9 +132,9 @@ All symbols for streams can be **lowercase** or **uppercase**.
 const api = require('@marcius-capital/binance-api')
 
 
-api.stream.depth({ symbol: 'btcusdt', updateSpeed = 1000 }, cb  =>  console.log(cb)) // updateSpeed: 1000ms default, can be 100 (100ms)
-api.stream.depthLevel({ symbol: 'btcusdt', level: 100, updateSpeed = 1000 }, cb  =>  console.log(cb)) // level: 100 default, updateSpeed: 1000ms default, can be 100 (100ms)
-api.stream.kline({ symbol: 'btcusdt', interval = '1h' }, cb  =>  console.log(cb))
+api.stream.depth({ symbol: 'btcusdt', updateSpeed: 1000 }, cb  =>  console.log(cb)) // updateSpeed: 1000ms default, can be 100 (100ms)
+api.stream.depthLevel({ symbol: 'btcusdt', level: 100, updateSpeed: 1000 }, cb  =>  console.log(cb)) // level: 100 default, updateSpeed: 1000ms default, can be 100 (100ms)
+api.stream.kline({ symbol: 'btcusdt', interval: '1h' }, cb  =>  console.log(cb))
 api.stream.aggTrade('btcusdt', cb => console.log(cb))
 api.stream.trade('btcusdt', cb => console.log(cb))
 api.stream.ticker('btcusdt', cb => console.log(cb))
@@ -141,8 +143,9 @@ api.stream.miniTicker('btcusdt', cb => console.log(cb))
 api.stream.miniTickers({}, cb => console.log(cb))
 
 // Add new
+// Attention! Much data.
 api.stream.bookTicker('btcusdt', cb => console.log(cb))  // Update Speed: Real-time
-api.stream.bookTicker({}, cb => console.log(cb))  // Update Speed: Real-time
+api.stream.bookTickers({}, cb => console.log(cb))  // Update Speed: Real-time
 
 ```
 
@@ -153,14 +156,29 @@ api.stream.bookTicker({}, cb => console.log(cb))  // Update Speed: Real-time
 api.stream.close.all()
 
 // Close connection
-api.stream.close.kline({symbol: 'btcusdt', interval = '1h'}) // Params for close stream are used similar for open stream
+api.stream.close.kline({symbol: 'btcusdt', interval: '1h'}) // Params for close stream are used similar for open stream
 
 // Close with uniqueID
-api.stream.close.kline({symbol: 'btcusdt', interval = '1h', uniqueID: 'my_awesome_id'}) 
+api.stream.close.kline({symbol: 'btcusdt', interval: '1h', uniqueID: 'my_awesome_id'}) 
 api.stream.close.kline({ uniqueID: 'my_awesome_id'}) 
 ```
 
 Close connection have similar params for closing. Difference: `api.stream.kline(<params>, cb)` => `api.stream.close.kline(<params>, cb)`. 
+
+### Error
+
+https://github.com/binance-exchange/binance-official-api-docs/blob/master/errors.md
+
+The error response is returned in JSON format with a lot of information, we minimized the response to simplify understanding.  Will responce string format: `'-1003 TOO_MANY_REQUESTS'` (as example) instead JSON. 
+
+```javascript
+console.err(api.error(err)) // Using example
+
+// Example
+api.rest.ticker({ <PARAMS> })
+    .then(res => console.log(res))
+    .catch(err => console.err(api.error(err))) // api.error(<ERR_RESPONSE>)
+```
 
 
 ## Stay In Touch
