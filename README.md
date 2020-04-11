@@ -2,7 +2,7 @@
 
 This project will help you make your own app that interact with [Binance API](https://github.com/binance-exchange/binance-official-api-docs). Package includes REST and  STREAM (Websocket) for client and server. 
 
-REST requests are caching (10m).
+REST requests are caching (60m).
 
 | Name                                                                                                                     | Description                                               |
 | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
@@ -101,22 +101,22 @@ https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-a
 const api = require('@marcius-capital/binance-api')
 
 // Public requests
-api.rest.exchangeInfo({})
-api.rest.ticker({ symbol: 'BTCUSDT' })
-api.rest.ticker({})
-api.rest.ticker24hr({ symbol: 'BTCUSDT' }) // Single ticker
+api.rest.exchangeInfo({}).then(res=> console.log(res))
+api.rest.ticker({ symbol: 'BTCUSDT' }).then(res=> console.log(res))
+api.rest.ticker({}).then(res=> console.log(res))
+api.rest.ticker24hr({ symbol: 'BTCUSDT' }).then(res=> console.log(res)) // Single ticker
 api.rest.ticker24hr({}).then(res => res.filter(i => parseFloat(i.volume) !== 0)) // All tickers
-api.rest.klines({ 	symbol: 'BTCUSDT', interval: '1h', limit: 500})
-api.rest.depth({ symbol: 'BTCUSDT' })
-api.rest.trades({ symbol: 'BTCUSDT', limit: 20 })
-api.rest.aggTrades({ symbol:'BTCUSDT' })
+api.rest.klines({ symbol: 'BTCUSDT', interval: '1h', limit: 500 }).then(res=> console.log(res))
+api.rest.depth({ symbol: 'BTCUSDT' }).then(res=> console.log(res))
+api.rest.trades({ symbol: 'BTCUSDT', limit: 20 }).then(res=> console.log(res))
+api.rest.aggTrades({ symbol:'BTCUSDT' }).then(res=> console.log(res))
 
-	// Private requests
-api.rest.account({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} })
+// Private requests
+api.rest.account({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }).then(res=> console.log(res))
 api.rest.account({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }).then(res => res.balances.filter(i=> parseFloat(i.free + i.locked) > 0)) // Balance
-api.rest.allOrders({ params: { symbol: 'BTCUSDT' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} })
-api.rest.createOrder({ params: {symbol: 'BTCUSDT', side: 'SELL', price: '8000', quantity: '0.01' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} })
-api.rest.myTrades({ params: { symbol: 'BTCUSDT' }, auth })
+api.rest.allOrders({ params: { symbol: 'BTCUSDT' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }).then(res=> console.log(res))
+api.rest.createOrder({ params: {symbol: 'BTCUSDT', side: 'SELL', price: '8000', quantity: '0.01' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }).then(res=> console.log(res))
+api.rest.myTrades({ params: { symbol: 'BTCUSDT' }, auth }).then(res=> console.log(res))
 
 ```
 
@@ -178,6 +178,14 @@ console.err(api.error(err)) // Using example
 api.rest.ticker({ <PARAMS> })
     .then(res => console.log(res))
     .catch(err => console.err(api.error(err))) // api.error(<ERR_RESPONSE>)
+```
+
+### Full list
+
+Full list requests in [test.js](/test.js). For testing local, uncomment request and run node:
+
+```node
+$ node test.js
 ```
 
 
