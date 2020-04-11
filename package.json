@@ -1,6 +1,6 @@
 {
   "name": "@marcius-capital/binance-api",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "Binance API (REST + WebSocket) is an asynchronous node.js library for the Binance API designed to be easy to use.",
   "main": "src/index.js",
   "repository": {

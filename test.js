@@ -2,8 +2,8 @@ const api = require('./src')
 
 // Fill for testing private request
 const auth = {
-    key: '<YOUR-KEY>',
-    secret: '<YOUR-SECRET>',
+    key: 'YOUR_KEY',
+    secret: 'YOUR_SECRET',
 }
 
 /**
@@ -47,6 +47,13 @@ const auth = {
 // api.stream.bookTickers({}, cb => console.log(cb))  // Update Speed: Real-time
 
 /**
+ ** STREAM: User data
+ */
+
+// api.stream.userData({ auth, uniqueID: 'my_awesome_id' }, cb => console.log(cb))
+// setTimeout(() => api.stream.close.userData({ uniqueID: 'my_awesome_id'}), 10000)
+
+/**
  ** ERROR
  */
 
@@ -56,6 +63,3 @@ api.rest.ticker({ symbol: 'BTCUSDT' })
     .then(res => console.log(res))
     .catch(err => console.err(api.error(err)))
 */
-
-
-

@@ -37,6 +37,10 @@ const restSchema = {
             1: 'quantity',
         }
     },
+    createOrder: {
+        origQty: 'quantity',
+        orderId: 'id'
+    },
     openOrders: {
         origQty: 'quantity',
         time: 'timestamp',
@@ -48,6 +52,96 @@ const restSchema = {
     },
 }
 
+const userStreamSchema = {
+    outboundAccountInfo: {
+        e: 'event',
+        u: 'lastUpdateTime',
+        E: 'eventTime',
+        m: 'makerCommission',
+        t: 'takerCommission',
+        b: 'buyerCommission',
+        s: 'sellerCommission',
+        T: 'canTrade',
+        W: 'canWithdraw',
+        D: 'canDeposit',
+        u: 'lastAccountUpdate',
+        B: 'balances',
+        'balances': {
+            a: 'asset',
+            f: 'free',
+            l: 'locked',
+        }
+    },
+    outboundAccountPosition: {
+        e: 'event',
+        E: 'eventTime',
+        u: 'lastAccountUpdate',
+        B: 'balances',
+        'balances': {
+            a: 'asset',
+            f: 'free',
+            l: 'locked',
+        }
+    },
+    balanceUpdate: {
+        e: 'event',
+        E: 'eventTime',
+        a: 'asset',
+        b: 'balance',
+        T: 'clearTime'
+    },
+    // Order update
+    executionReport: {
+        e: 'event',
+        E: 'eventTime',
+        s: 'symbol',
+        c: 'clientOrderId',
+        S: 'side',
+        o: 'type',
+        f: 'timeInForce',  // GTC 'Good till Cancel', IOC: 'Immediate or Cancel'
+        q: 'quantity',
+        p: 'price',
+        P: 'stopPrice',
+        F: 'icebergQuantity',
+        g: 'orderListId',
+        C: 'originalClientOrderId', // This is the ID of the order being canceled
+        x: 'executionType',
+        X: 'status',
+        r: 'rejectReason',
+        i: 'id',
+        l: 'lastTradeQuantity',
+        z: 'accumulatedQuantity',
+        L: 'lastTradePrice',
+        n: 'commission',
+        N: 'commissionAsset',
+        T: 'transactTime',
+        t: 'tradeId',
+        w: 'isOrderInBook',
+        m: 'maker',
+        O: 'orderCreationTime',
+        Z: 'quoteAssetTransactedQuantity',             // Cumulative quote asset transacted quantity
+        Y: 'lastQuoteAssetTransactedQuantity',         // Last quote asset transacted quantity (i.e. lastPrice * lastQty),
+        Q: 'quoteOrderQty',                            // Quote Order Qty
+    },
+    listStatus: {
+        e: 'event',
+        E: 'eventTime',
+        s: 'symbol',
+        g: 'orderListId',
+        c: 'contingencyType',
+        l: 'listStatusType',
+        L: 'listOrderStatus',
+        r: 'listRejectReason',
+        C: 'listClientOrderId',
+        T: 'transactionTime',
+        O: 'orders',
+        'orders': {
+            s: 'symbol',
+            i: 'orderId',
+            c: 'clientOrderId'
+        }
+    }
+}
 
 const streamSchema = {
     aggTrade: {
@@ -118,71 +212,6 @@ const streamSchema = {
             B: 'ignored'
         },
     },
-    aggTradeEvent: {
-        e: 'event',
-        E: 'eventTime',
-        s: 'symbol',
-        a: 'tradeId',
-        p: 'price',
-        q: 'quantity',
-        f: 'firstTradeId',
-        l: 'lastTradeId',
-        T: 'timestamp',
-        m: 'maker',
-        M: 'ignored'
-    },
-    outboundAccountInfoEvent: {
-        e: 'event',
-        E: 'eventTime',
-        m: 'makerCommission',
-        t: 'takerCommission',
-        b: 'buyerCommission',
-        s: 'sellerCommission',
-        T: 'canTrade',
-        W: 'canWithdraw',
-        D: 'canDeposit',
-        B: 'balances',
-        u: 'lastUpdateTime'
-    },
-    executionReportEvent: {
-        e: 'event',
-        E: 'eventTime',
-        s: 'symbol',
-        c: 'newClientOrderId',
-        S: 'side',
-        o: 'orderType',
-        f: 'cancelType', // GTC 'Good till Cancel', IOC: 'Immediate or Cancel'
-        q: 'quantity',
-        p: 'price',
-        P: 'stopPrice',
-        F: 'icebergQuantity',
-        C: 'originalClientOrderId',
-        x: 'executionType',
-        X: 'orderStatus',
-        r: 'rejectReason',
-        i: 'orderId',
-        l: 'lastTradeQuantity',
-        z: 'accumulatedQuantity',
-        L: 'lastTradePrice',
-        n: 'commission',
-        N: 'commissionAsset',
-        m: 'maker',
-        T: 'tradeTime',
-        t: 'tradeId'
-    },
-    tradeEvent: {
-        e: 'event',
-        E: 'eventTime',
-        s: 'symbol',
-        t: 'tradeId',
-        p: 'price',
-        q: 'quantity',
-        b: 'buyerOrderId',
-        a: 'sellerOrderId',
-        T: 'timestamp',
-        m: 'maker',
-        M: 'ignored'
-    },
     '24hrTicker': {
         e: 'event',
         E: 'eventTime',
@@ -227,10 +256,13 @@ const streamSchema = {
         a: 'bestAskPrice',
         A: 'bestAskQuantity',
 
-    }
+    },
+
+    // User data Stream
+    ...userStreamSchema
 }
 
 module.exports = {
     restSchema,
-    streamSchema
+    streamSchema,
 }

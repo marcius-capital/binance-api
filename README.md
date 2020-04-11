@@ -4,16 +4,17 @@ This project will help you make your own app that interact with [Binance API](ht
 
 REST requests are caching (60m).
 
-| Name                                                                                                                     | Description                                               |
-| ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
-| [rest-api.md](https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md)                     | Details on the Rest API (/api)                            |
-| [web-socket-streams.md](https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md) | Details on available streams and payloads                 |
-| [errors.md](https://github.com/binance-exchange/binance-official-api-docs/blob/master/errors.md)                         | Descriptions of possible error messages from the Rest API |
+| Name  | Description  |
+| ------------- | ------------- |
+| [rest-api.md](https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md) | Details on the Rest API  |
+|[web-socket-streams](https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md) | Details on available streams and payloads  |
+| [user-data-stream](https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md) | Details on the dedicated account stream  |
+| [errors](https://github.com/binance-exchange/binance-official-api-docs/blob/master/errors.md) | Descriptions of possible error messages from the Rest API  |
 
-## Table of Contents
+## Menu
 
 - [Binance API](#binance-api)
-  - [Table of Contents](#table-of-contents)
+  - [Menu](#menu)
   - [Introduction](#introduction)
     - [Schema snippet / schema.js](#schema-snippet--schemajs)
     - [Updated response](#updated-response)
@@ -24,9 +25,10 @@ REST requests are caching (60m).
   - [Websocket](#websocket)
     - [List of STREAM requests](#list-of-stream-requests)
     - [Close connection(s)](#close-connections)
+    - [User data](#user-data)
   - [Error](#error)
-  - [Full list](#full-list)
-  - [Stay In Touch](#stay-in-touch)
+  - [Full list requests](#full-list-requests)
+  - [Stay in touch](#stay-in-touch)
   - [License](#license)
 
 ## Introduction
@@ -82,6 +84,7 @@ $ npm install @marcius-capital/binance-api
 
 ```javascript
 const api = require('@marcius-capital/binance-api')
+
 // REST
 api.rest.<REQUEST_NAME>({<OPTIONS>}).then(cb => console.log(cb))
 
@@ -97,7 +100,7 @@ api.stream.close.<REQUEST_NAME>({uniqueID:<string_id>})
 ```
 ``<PARAMS>`` valid from Official [Binance API](#binance-api). ``<REQUEST_NAME>`` You can find below in REST and WebSocket stack.
 
-**uniqueID** - a unique key by which you can **_open_** and **_close_** the connection
+**uniqueID** - a unique key by which you can **_open_** and **_close_** the connection. With different IDs you can open different connections in same time. To control connections, repeated are prohibited.
 
 ## Rest
 
@@ -175,6 +178,29 @@ api.stream.close.kline({ uniqueID: 'my_awesome_id'})
 
 Close connection have similar params for closing. Difference: `api.stream.kline(<params>, cb)` => `api.stream.close.kline(<params>, cb)`. 
 
+### User data
+
+https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md
+
+Upon changes in the account, returns data about balance, orders etc.
+
+> Start a new user data stream. The stream will close after 60 minutes unless a keepalive is sent. If the account has an active listenKey, that listenKey will be returned and its validity will be extended for 60 minutes. (c) Binance
+
+Stream alive 24 hours. Every 30 minutes, package automatically sends a request to keep alive `listenKey`
+
+**User data has been partially tested. Use carefully. If you have problems, open issue.**
+
+```javascript
+// Simple open and close "user data stream"
+// this is enough if you have a connection for one user
+api.stream.userData({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }, cb => console.log(cb))
+api.stream.close.userData()
+
+// For comfort you can add "uniqueID"
+api.stream.userData({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'}, uniqueID: 'my_awesome_id' }, cb => console.log(cb))
+api.stream.close.userData({ uniqueID: 'my_awesome_id'})
+```
+
 ## Error
 
 https://github.com/binance-exchange/binance-official-api-docs/blob/master/errors.md
@@ -190,7 +216,7 @@ api.rest.ticker({ <PARAMS> })
     .catch(err => console.err(api.error(err))) // api.error(<ERR_RESPONSE>)
 ```
 
-## Full list
+## Full list requests
 
 Full list of requests in [test.js](/test.js). For testing local, uncomment request and run node:
 
@@ -199,9 +225,9 @@ $ node test.js
 ```
 
 
-## Stay In Touch
+## Stay in touch
 
-Feel free to ask questions
+Feel free to ask questions 😊
 
 * Discord: https://discordapp.com/invite/DaWfrPx
 * Telegram channel: https://t.me/joinchat/G5DV0xUO-pvjEmoWc7dBUg

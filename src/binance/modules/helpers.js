@@ -1,6 +1,5 @@
 // Need for control open connections
 let sockets = new Map()
-
 // Recreate stream if open repeatedly
 const updateSockets = ({ path, uniqueID }, socket) => {
     if (uniqueID) {
@@ -28,5 +27,5 @@ const closeSocket = (key) => {
 module.exports = {
     updateSockets,
     closeSockets,
-    closeSocket
+    closeSocket,
 }

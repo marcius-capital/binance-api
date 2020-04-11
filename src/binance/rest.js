@@ -1,12 +1,13 @@
 const crypto = require('crypto')
+const qs = require('querystring')
 const axios = require('axios')
 const { setupCache } = require('axios-cache-adapter')
 
-const qs = require('querystring')
+
 
 // Create `axios-cache-adapter` instance
 const cache = setupCache({
-    maxAge: 60 * 60 * 1000,
+    maxAge: 60 * 60 * 1000, // 60 min
     exclude: { query: false }
 })
 
@@ -16,7 +17,7 @@ const axiosWithCache = axios.create({
 })
 
 const renameKeys = require('../renameKeys')
-const { restSchema } = require("./schema")
+const { restSchema } = require("./modules/schema")
 
 /**
 * https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
@@ -103,8 +104,6 @@ const schema = {
 
 const rename = (data, event) => renameKeys(restSchema[event], data)
 
-const headers = {}
-
 const requestPrivateAPI = ({ params: _params = {}, ...data }, { auth = {}, params = {} }, event) => {
     const timestamp = Date.now()
 
@@ -117,7 +116,7 @@ const requestPrivateAPI = ({ params: _params = {}, ...data }, { auth = {}, param
     const options = {
         method: data.method,
         url: url + data.url,
-        headers: Object.assign({ 'X-MBX-APIKEY': auth.key }, headers),
+        headers: { 'X-MBX-APIKEY': auth.key },
         params: Object.assign(params, data.params, { signature }, { timestamp })
     }
 
@@ -125,11 +124,11 @@ const requestPrivateAPI = ({ params: _params = {}, ...data }, { auth = {}, param
 }
 
 const requestPublicAPI = (data, payload = {}, event) => {
-    return axiosWithCache.get(url + data.url, { params: payload, headers }).then(res => rename(res.data, event))
+    return axiosWithCache.get(url + data.url, { params: payload }).then(res => rename(res.data, event))
 }
 
 const api = Object.keys(schema).reduce((result, item) => {
-    result[item] = payload => (schema[item].private) ? requestPrivateAPI(schema[item], { ...payload }, item) : requestPublicAPI(schema[item], payload, item)
+    result[item] = (payload) => (schema[item].private) ? requestPrivateAPI(schema[item], payload, item) : requestPublicAPI(schema[item], payload, item)
     return result
 }, {})
 

@@ -1,12 +1,13 @@
+const rest = require('./binance/rest')
+const stream = require('./binance/stream')
+
 module.exports = {
-    rest: require('./binance/rest'),
-    stream: require('./binance/stream'),
+    rest,
+    stream,
     error: err => {
         if (typeof err.response.data != 'undefined') {
-            const error = err.response.data
-            return `${error.code}: ${error.msg}`
+            return `${err.response.data.code}: ${err.response.data.msg}`
         }
-
-        console.error(err)
+        return err
     }
 }
