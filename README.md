@@ -12,10 +12,22 @@ REST requests are caching (60m).
 
 ## Table of Contents
 
-* [Introduction](#introduction)
-* [Install](#install)
-* [Rest](#rest)
-* [Websocket](#websocket)
+- [Binance API](#binance-api)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [Schema snippet / schema.js](#schema-snippet--schemajs)
+    - [Updated response](#updated-response)
+  - [Install](#install)
+    - [Package manager](#package-manager)
+  - [Rest](#rest)
+    - [List of REST requests](#list-of-rest-requests)
+  - [Websocket](#websocket)
+    - [List of STREAM requests](#list-of-stream-requests)
+    - [Close connection(s)](#close-connections)
+  - [Error](#error)
+  - [Full list](#full-list)
+  - [Stay In Touch](#stay-in-touch)
+  - [License](#license)
 
 ## Introduction
 
@@ -67,8 +79,6 @@ If you need to update the keys, you can do this in [schema.js](/src/binance/sche
 $ yarn add @marcius-capital/binance-api
 $ npm install @marcius-capital/binance-api
 ```
-
-###
 
 ```javascript
 const api = require('@marcius-capital/binance-api')
@@ -165,7 +175,7 @@ api.stream.close.kline({ uniqueID: 'my_awesome_id'})
 
 Close connection have similar params for closing. Difference: `api.stream.kline(<params>, cb)` => `api.stream.close.kline(<params>, cb)`. 
 
-### Error
+## Error
 
 https://github.com/binance-exchange/binance-official-api-docs/blob/master/errors.md
 
@@ -180,9 +190,9 @@ api.rest.ticker({ <PARAMS> })
     .catch(err => console.err(api.error(err))) // api.error(<ERR_RESPONSE>)
 ```
 
-### Full list
+## Full list
 
-Full list requests in [test.js](/test.js). For testing local, uncomment request and run node:
+Full list of requests in [test.js](/test.js). For testing local, uncomment request and run node:
 
 ```node
 $ node test.js
