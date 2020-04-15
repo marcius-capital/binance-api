@@ -24,10 +24,11 @@ REST requests are caching (60m).
     - [List of REST requests](#list-of-rest-requests)
   - [Websocket](#websocket)
     - [List of STREAM requests](#list-of-stream-requests)
-    - [Close connection(s)](#close-connections)
-    - [User data](#user-data)
+    - [Close connection](#close-connection)
+    - [User data stream](#user-data-stream)
   - [Error](#error)
   - [Full list requests](#full-list-requests)
+  - [TODO](#todo)
   - [Stay in touch](#stay-in-touch)
   - [License](#license)
 
@@ -128,6 +129,7 @@ api.rest.aggTrades({ symbol:'BTCUSDT' }).then(res=> console.log(res))
 api.rest.account({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }).then(res=> console.log(res))
 api.rest.account({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }).then(res => res.balances.filter(i=> parseFloat(i.free + i.locked) > 0)) // Balance
 api.rest.allOrders({ params: { symbol: 'BTCUSDT' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }).then(res=> console.log(res))
+api.rest.openOrders({ params: { symbol: 'BTCUSDT' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }).then(res => console.log(res))
 api.rest.createOrder({ params: {symbol: 'BTCUSDT', side: 'SELL', price: '8000', quantity: '0.01' }, auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'} }).then(res=> console.log(res))
 api.rest.myTrades({ params: { symbol: 'BTCUSDT' }, auth }).then(res=> console.log(res))
 
@@ -162,7 +164,7 @@ api.stream.bookTickers({}, cb => console.log(cb))  // Update Speed: Real-time
 
 ```
 
-### Close connection(s)
+### Close connection
 
 ```javascript
 // Close connections
@@ -178,7 +180,7 @@ api.stream.close.kline({ uniqueID: 'my_awesome_id'})
 
 Close connection have similar params for closing. Difference: `api.stream.kline(<params>, cb)` => `api.stream.close.kline(<params>, cb)`. 
 
-### User data
+### User data stream
 
 https://github.com/binance-exchange/binance-official-api-docs/blob/master/user-data-stream.md
 
@@ -224,14 +226,19 @@ Full list of requests in [test.js](/test.js). For testing local, uncomment reque
 $ node test.js
 ```
 
+## TODO
+
+* ~~Spot~~
+* ~~Websocket spot~~
+* ~~Websocket spot - "User Data Stream"~~
+* Futures with testnet
 
 ## Stay in touch
 
 Feel free to ask questions 😊
 
+* Reddit: https://reddit.com/r/MarciusCapital
 * Discord: https://discordapp.com/invite/DaWfrPx
-* Telegram channel: https://t.me/joinchat/G5DV0xUO-pvjEmoWc7dBUg
-
 
 ## License
 [MIT](http://opensource.org/licenses/MIT) | Copyright (c) 2019-present

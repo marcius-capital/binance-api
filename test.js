@@ -2,8 +2,8 @@ const api = require('./src')
 
 // Fill for testing private request
 const auth = {
-    key: 'YOUR_KEY',
-    secret: 'YOUR_SECRET',
+    key: '',
+    secret: '',
 }
 
 /**
@@ -25,6 +25,7 @@ const auth = {
 // api.rest.account({ auth }).then(res => console.log(res))
 // api.rest.account({ auth }).then(res => res.balances.filter(i => parseFloat(i.free + i.locked) > 0)) // Balance
 // api.rest.allOrders({ params: { symbol: 'BTCUSDT' }, auth }).then(res => console.log(res))
+// api.rest.openOrders({ params: { symbol: 'BTCUSDT' }, auth }).then(res => console.log(res))
 // api.rest.createOrder({ params: { symbol: 'BTCUSDT', side: 'SELL', price: '8000', quantity: '0.01' }, auth }).then(res => console.log(res))
 // api.rest.myTrades({ params: { symbol: 'BTCUSDT' }, auth }).then(res => console.log(res))
 

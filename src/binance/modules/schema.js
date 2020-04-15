@@ -1,7 +1,6 @@
 const restSchema = {
     trades: {
         qty: 'quantity',
-        time: 'timestamp',
     },
     aggTrades: {
         a: 'aggTradeId',
@@ -9,7 +8,7 @@ const restSchema = {
         q: 'quantity',
         f: 'firstTradeId',
         l: 'lastTradeId',
-        T: 'timestamp',
+        T: 'time',
         m: 'maker',
         M: 'bestPriceMatch'
     },
@@ -43,7 +42,6 @@ const restSchema = {
     },
     openOrders: {
         origQty: 'quantity',
-        time: 'timestamp',
         orderId: 'id'
     },
     allOrders: {
@@ -153,7 +151,7 @@ const streamSchema = {
         q: 'quantity',
         f: 'firstTradeId',
         l: 'lastTradeId',
-        T: 'timestamp',
+        T: 'time',
         m: 'maker',
         M: 'bestPriceMatch'
     },
@@ -166,7 +164,7 @@ const streamSchema = {
         q: 'quantity',
         b: 'buyerOrderId',
         a: 'sellerOrderId',
-        T: 'timestamp',
+        T: 'time',
         m: 'maker',
         M: 'bestPriceMatch'
     },
