@@ -7,7 +7,7 @@ const auth = {
 }
 
 /**
- ** REST
+ ** Rest
  */
 
 // Public requests
@@ -30,7 +30,14 @@ const auth = {
 // api.rest.myTrades({ params: { symbol: 'BTCUSDT' }, auth }).then(res => console.log(res))
 
 /**
- ** STREAM
+ ** Rest with proxy
+ */
+
+// api.rest.ticker({ symbol: 'BTCUSDT', proxy: { host: 'http://localhost', port: '3000' } }).then(res => console.log(res))
+// api.rest.account({ auth,  proxy: { host: 'http://localhost', port: '3000' } }).then(res => console.log(res))
+
+/**
+ ** Stream
  */
 
 // api.stream.depth({ symbol: 'btcusdt', updateSpeed: 1000 }, cb => console.log(cb)) // updateSpeed: 1000ms default, can be 100 (100ms)
@@ -48,14 +55,14 @@ const auth = {
 // api.stream.bookTickers({}, cb => console.log(cb))  // Update Speed: Real-time
 
 /**
- ** STREAM: User data
+ ** Stream - user data
  */
 
 // api.stream.userData({ auth, uniqueID: 'my_awesome_id' }, cb => console.log(cb))
 // setTimeout(() => api.stream.close.userData({ uniqueID: 'my_awesome_id'}), 10000)
 
 /**
- ** ERROR
+ ** Error
  */
 
 // api.error(err))

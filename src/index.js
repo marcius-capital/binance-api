@@ -1,5 +1,5 @@
-const rest = require('./binance/rest')
-const stream = require('./binance/stream')
+const rest = require('./spot/rest')
+const stream = require('./spot/stream')
 
 module.exports = {
     rest,

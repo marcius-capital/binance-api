@@ -3,6 +3,8 @@
 
 const axios = require('axios')
 
+const proxyWrapper = require('./modules/proxy')
+
 const setupWebSocket = require('./modules/websocket')
 const { closeSocket } = require('./modules/helpers')
 
@@ -29,22 +31,24 @@ const schema = {
     }
 }
 
-// result: { "listenKey": "pqia91ma19a5s61cv6a81va65sdf19v8a65a1a5s61cv6a81va65sdf19v8a65a1" }
-const createListenKey = (data, { auth = {} }) => {
+// result: { "listenKey": "pqia91ma19a5s61cv6a81va65sdf12v8a64a1a5s61cv6a81va45sdf19v8a65a1" }
+const createListenKey = (data, { auth = {}, proxy }) => {
     return axios({
         method: data.method,
-        url: url + data.url,
+        url: proxyWrapper(url + data.url, proxy),
         headers: { 'X-MBX-APIKEY': auth.key },
     }).then(res => res.data)
+        .catch(err => console.error(err))
 }
 
-const request = (data, { auth = {}, params = {} }) => {
+const request = (data, { auth = {}, params = {}, proxy }) => {
     return axios({
         method: data.method,
-        url: url + data.url,
+        url: proxyWrapper(url + data.url, proxy),
         headers: { 'X-MBX-APIKEY': auth.key },
-        params
+        params,
     }).then(res => res.data)
+        .catch(err => console.error(err))
 }
 
 const api = Object.keys(schema).reduce((result, item) => {
@@ -70,8 +74,8 @@ const keepAlive = ({ auth, params }) => {
  * WebScoket
  */
 
-const userData = ({ auth, uniqueID }, callback) => {
-    api.createListenKey({ auth })
+const userData = ({ auth, uniqueID, proxy }, callback) => {
+    api.createListenKey({ auth, proxy })
         .then(res => {
             listenKey = res.listenKey
             setupWebSocket({ path: res.listenKey, uniqueID }, cb => callback(cb))
@@ -79,7 +83,7 @@ const userData = ({ auth, uniqueID }, callback) => {
         })
 }
 
-const closeUserData = ({uniqueID}) => {
+const closeUserData = ({ uniqueID }) => {
     if (keepAliveInterval) {
         clearInterval(keepAliveInterval)
         keepAliveInterval = null

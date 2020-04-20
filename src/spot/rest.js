@@ -3,7 +3,7 @@ const qs = require('querystring')
 const axios = require('axios')
 const { setupCache } = require('axios-cache-adapter')
 
-
+const proxyWrapper = require('./modules/proxy')
 
 // Create `axios-cache-adapter` instance
 const cache = setupCache({
@@ -104,27 +104,26 @@ const schema = {
 
 const rename = (data, event) => renameKeys(restSchema[event], data)
 
-const requestPrivateAPI = ({ params: _params = {}, ...data }, { auth = {}, params = {} }, event) => {
+const requestPrivateAPI = ({ params: defaultParams = {}, ...data }, { auth = {}, params = {}, proxy }, event) => {
     const timestamp = Date.now()
 
-    const queryString = qs.stringify(Object.assign(params, _params, { timestamp }))
-
+    const queryString = qs.stringify(Object.assign(params, defaultParams, { timestamp }))
     const signature = crypto.createHmac('sha256', auth.secret)
         .update(queryString)
         .digest('hex')
 
     const options = {
         method: data.method,
-        url: url + data.url,
+        url: proxyWrapper(url + data.url, proxy),
         headers: { 'X-MBX-APIKEY': auth.key },
-        params: Object.assign(params, data.params, { signature }, { timestamp })
+        params: Object.assign(params, data.params, { signature }, { timestamp }),
     }
 
     return axiosWithCache(options).then(res => rename(res.data, event))
 }
 
-const requestPublicAPI = (data, payload = {}, event) => {
-    return axiosWithCache.get(url + data.url, { params: payload }).then(res => rename(res.data, event))
+const requestPublicAPI = (data, { proxy, ...params }, event) => {
+    return axiosWithCache.get(proxyWrapper(url + data.url, proxy), { params }).then(res => rename(res.data, event))
 }
 
 const api = Object.keys(schema).reduce((result, item) => {

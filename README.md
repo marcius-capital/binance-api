@@ -22,6 +22,7 @@ REST requests are caching (60m).
     - [Package manager](#package-manager)
   - [Rest](#rest)
     - [List of REST requests](#list-of-rest-requests)
+    - [Proxy](#proxy)
   - [Websocket](#websocket)
     - [List of STREAM requests](#list-of-stream-requests)
     - [Close connection](#close-connection)
@@ -135,6 +136,21 @@ api.rest.myTrades({ params: { symbol: 'BTCUSDT' }, auth }).then(res=> console.lo
 
 ```
 
+### Proxy
+
+Proxies can be used with all REST requests.
+
+```javascript
+api.rest.<request_name>({proxy: {host: 'http://localhost', port: '3000'}}).then(res=> console.log(res))
+api.rest.<request_name>({proxy: {host: 'http://super-proxy-service.com',  port: 'some_port_if_is', auth: { username: 'my-username', password: 'my-password' }}}).then(res=> console.log(res))
+
+// Example
+api.rest.ticker({ symbol: 'BTCUSDT', proxy: { host: 'http://localhost', port: '3000' } }).then(res => console.log(res)) // Public
+api.rest.account({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'},  proxy: { host: 'http://localhost', port: '3000' } }).then(res => console.log(res)) // Private
+```
+
+If you are familiar with [Axios](https://github.com/axios/axios#request-config), can read docs.
+
 ## Websocket
 
 https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
@@ -201,6 +217,9 @@ api.stream.close.userData()
 // For comfort you can add "uniqueID"
 api.stream.userData({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'}, uniqueID: 'my_awesome_id' }, cb => console.log(cb))
 api.stream.close.userData({ uniqueID: 'my_awesome_id'})
+
+// With proxy
+api.stream.userData({ auth: {key: '<YOUR-KEY>', secret: '<YOUR-SECRET>'}, proxy: {host: 'http://localhost', port: '3000' } }, cb => console.log(cb))
 ```
 
 ## Error
@@ -231,6 +250,7 @@ $ node test.js
 * ~~Spot~~
 * ~~Websocket spot~~
 * ~~Websocket spot - "User Data Stream"~~
+* ~~Proxy~~
 * Futures with testnet
 
 ## Stay in touch
