@@ -104,7 +104,7 @@ const schema = {
 
 const rename = (data, event) => renameKeys(restSchema[event], data)
 
-const requestPrivateAPI = ({ params: defaultParams = {}, ...data }, { auth = {}, params = {}, proxy }, event) => {
+const requestPrivateAPI = ({ params: defaultParams = {}, ...data }, { auth = {}, params = {}, proxy = {} }, event) => {
     const timestamp = Date.now()
 
     const queryString = qs.stringify(Object.assign(params, defaultParams, { timestamp }))
@@ -122,7 +122,7 @@ const requestPrivateAPI = ({ params: defaultParams = {}, ...data }, { auth = {},
     return axiosWithCache(options).then(res => rename(res.data, event))
 }
 
-const requestPublicAPI = (data, { proxy, ...params }, event) => {
+const requestPublicAPI = (data, { proxy = {}, ...params }, event) => {
     return axiosWithCache.get(proxyWrapper(url + data.url, proxy), { params }).then(res => rename(res.data, event))
 }
 
